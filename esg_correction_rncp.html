@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ESG Learn — Correction Épreuve Certifiante RNCP</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --navy:#1c2b4a;
+  --navy2:#253660;
+  --gold:#c9953a;
+  --gold-pale:#fdf6e8;
+  --cream:#f7f5f0;
+  --white:#fff;
+  --text:#1e1e1e;
+  --muted:#6b7280;
+  --light:#9ca3af;
+  --border:#ddd8ce;
+  --green:#1e6641;
+  --green-bg:#edf7f1;
+  --green-bd:#9dd4b4;
+  --orange:#92400e;
+  --orange-bg:#fff8ec;
+  --orange-bd:#fcd38d;
+  --red:#991b1b;
+  --red-bg:#fef2f2;
+  --red-bd:#fca5a5;
+  --blue:#1d4ed8;
+  --blue-bg:#eff6ff;
+  --blue-bd:#bfdbfe;
+  --r:6px;
+}
+
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;font-size:14px;line-height:1.6}
+
+/* ─── TOP BAR ─── */
+.topbar{background:var(--navy2);height:36px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;font-size:11px;color:rgba(255,255,255,.55);letter-spacing:.03em}
+.topbar b{color:rgba(255,255,255,.85);font-weight:500}
+
+/* ─── HEADER ─── */
+.site-header{background:var(--navy);border-bottom:3px solid var(--gold);padding:0 2rem}
+.header-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:68px}
+.brand{display:flex;align-items:center;gap:14px}
+.brand-mark{width:42px;height:42px;background:var(--gold);border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:20px;color:var(--navy);font-weight:700}
+.brand-text h1{font-size:16px;font-weight:600;color:#fff;letter-spacing:.01em}
+.brand-text p{font-size:10px;color:rgba(255,255,255,.45);letter-spacing:.09em;text-transform:uppercase;margin-top:1px}
+.header-meta{color:rgba(255,255,255,.4);font-size:11px;text-align:right;line-height:1.8}
+
+/* ─── BREADCRUMB ─── */
+.breadcrumb{background:var(--white);border-bottom:1px solid var(--border);padding:0 2rem}
+.bc-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:6px;height:44px;font-size:12px;color:var(--muted)}
+.bc-inner span{color:var(--light)}
+.bc-inner a{color:var(--navy);text-decoration:none;font-weight:500}
+.bc-inner a:hover{text-decoration:underline}
+
+/* ─── TABS ─── */
+.tabs{background:var(--white);border-bottom:1px solid var(--border);padding:0 2rem}
+.tabs-inner{max-width:1080px;margin:0 auto;display:flex}
+.tab{padding:13px 18px;font-size:13px;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;font-weight:500;user-select:none}
+.tab:hover{color:var(--navy)}
+.tab.active{color:var(--navy);border-bottom-color:var(--gold)}
+
+/* ─── PAGE ─── */
+.page{max-width:1080px;margin:0 auto;padding:1.75rem 2rem 5rem;display:grid;grid-template-columns:260px 1fr;gap:1.5rem;align-items:start}
+
+/* ─── SIDEBAR ─── */
+.sidebar{display:flex;flex-direction:column;gap:1rem}
+.scard{background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.scard-head{background:var(--navy);color:#fff;font-size:10px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;padding:9px 14px}
+.scard-body{padding:14px}
+
+.form-group{margin-bottom:12px}
+.form-group:last-child{margin-bottom:0}
+.form-label{display:block;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+.form-input{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:5px;font-size:13px;font-family:monospace;background:#fafafa;color:var(--text);outline:none;transition:border-color .15s}
+.form-input:focus{border-color:var(--gold);background:#fff}
+.form-input.ok{border-color:var(--green);background:var(--green-bg)}
+.toggle-btn{padding:8px 11px;border:1px solid var(--border);border-radius:5px;background:#fafafa;cursor:pointer;font-size:12px;flex-shrink:0}
+.key-row{display:flex;gap:6px}
+.key-link{font-size:11px;color:var(--blue);margin-top:4px;display:block}
+
+.status-row{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:11px;color:var(--muted)}
+.dot{width:7px;height:7px;border-radius:50%;background:#ccc;flex-shrink:0}
+.dot.ok{background:var(--green)}
+.dot.warn{background:var(--gold)}
+
+/* ─── UPLOAD ZONE ─── */
+.upload-zone{border:1.5px dashed var(--border);border-radius:5px;padding:16px 10px;text-align:center;cursor:pointer;transition:all .15s;background:#fafafa}
+.upload-zone:hover,.upload-zone.over{border-color:var(--gold);background:var(--gold-pale)}
+.upload-zone.loaded{border-color:var(--green);background:var(--green-bg);border-style:solid}
+.upload-zone input{display:none}
+.uz-icon{font-size:22px;margin-bottom:4px}
+.uz-label{font-size:12px;font-weight:500;color:var(--text)}
+.uz-sub{font-size:11px;color:var(--light);margin-top:2px}
+
+.file-chip{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--green-bd);border-radius:4px;padding:5px 9px;font-size:11px;margin-top:6px}
+.chip-name{color:var(--green);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:75%}
+.chip-del{cursor:pointer;color:var(--light);font-size:15px;line-height:1;flex-shrink:0}
+.chip-del:hover{color:var(--red)}
+
+.prog-bar{display:none;margin-top:8px}
+.prog-track{height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;background:var(--gold);border-radius:2px;transition:width .2s}
+.prog-label{font-size:10px;color:var(--muted);margin-top:3px}
+
+/* ─── BOUTON ─── */
+.btn-submit{width:100%;padding:11px;background:var(--navy);color:#fff;border:none;border-radius:5px;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:2px}
+.btn-submit:hover:not(:disabled){background:var(--navy2)}
+.btn-submit:disabled{background:#c5c5c5;cursor:not-allowed}
+.spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.info-chip{background:var(--blue-bg);border:1px solid var(--blue-bd);border-radius:4px;padding:8px 10px;font-size:11px;color:#1e3a8a;line-height:1.5;margin-bottom:10px}
+
+/* ─── MAIN CONTENT ─── */
+.content{}
+
+/* Zone devoir */
+.content-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:1rem}
+.content-card-head{background:var(--navy);color:#fff;padding:12px 18px;display:flex;align-items:center;justify-content:space-between}
+.content-card-head h2{font-size:13px;font-weight:600;letter-spacing:.01em}
+.content-card-head .badge-edc{background:var(--gold);color:var(--navy);font-size:10px;font-weight:700;padding:2px 9px;border-radius:999px}
+.content-card-body{padding:16px 18px}
+
+.textarea-devoir{width:100%;min-height:180px;padding:12px;border:1px solid var(--border);border-radius:5px;font-size:13px;font-family:'Inter',sans-serif;resize:vertical;outline:none;transition:border-color .15s;background:#fafafa;color:var(--text);line-height:1.7}
+.textarea-devoir:focus{border-color:var(--gold);background:#fff}
+.textarea-devoir::placeholder{color:var(--light)}
+.or-line{display:flex;align-items:center;gap:8px;margin:10px 0;color:var(--light);font-size:11px}
+.or-line::before,.or-line::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.errbox{background:var(--red-bg);border:1px solid var(--red-bd);border-radius:5px;padding:10px 14px;font-size:12px;color:var(--red);display:none;margin-top:10px}
+
+/* ─── RÉSULTAT ─── */
+#result-wrap{display:none}
+.result-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+
+.result-header{background:var(--navy);color:#fff;padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.result-header h2{font-size:14px;font-weight:600}
+.mention-badge{font-size:11px;font-weight:700;padding:3px 12px;border-radius:999px;letter-spacing:.03em}
+.m-acquis{background:#22c55e;color:#fff}
+.m-partiel{background:var(--gold);color:#fff}
+.m-non{background:#ef4444;color:#fff}
+.m-def{background:#6b7280;color:#fff}
+
+.result-body{padding:20px 22px;font-size:13.5px;line-height:1.85;max-height:none}
+
+/* Styles pour le contenu markdown rendu */
+.result-body h2{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--navy);margin:1.8rem 0 .7rem;padding-bottom:6px;border-bottom:2px solid var(--gold);letter-spacing:.01em}
+.result-body h2:first-child{margin-top:0}
+.result-body h3{font-size:14px;font-weight:600;color:var(--navy);margin:1.2rem 0 .4rem;padding-left:10px;border-left:3px solid var(--gold)}
+.result-body h4{font-size:13px;font-weight:600;color:var(--muted);margin:.8rem 0 .3rem;text-transform:uppercase;letter-spacing:.05em;font-size:11px}
+.result-body p{margin-bottom:.6rem}
+.result-body ul{margin:.3rem 0 .7rem 1.2rem}
+.result-body li{margin-bottom:3px}
+.result-body strong{color:var(--navy);font-weight:600}
+.result-body em{color:var(--muted)}
+.result-body hr{border:none;border-top:1px solid var(--border);margin:1.2rem 0}
+
+/* Tableaux style corrigé */
+.result-body table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:12.5px}
+.result-body th{background:var(--navy);color:#fff;padding:7px 12px;text-align:left;font-weight:500;font-size:11px;letter-spacing:.04em}
+.result-body td{padding:7px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+.result-body tr:nth-child(even) td{background:#fafaf8}
+
+/* Bloc calcul */
+.calc-block{background:var(--blue-bg);border:1px solid var(--blue-bd);border-radius:5px;padding:12px 14px;margin:.6rem 0;font-family:monospace;font-size:12.5px;line-height:1.9;color:#1e3a8a}
+.calc-block .calc-title{font-family:'Inter',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#3b82f6;margin-bottom:6px}
+
+/* Mention inline */
+.m-inline{display:inline-block;padding:1px 8px;border-radius:999px;font-size:11px;font-weight:600;margin:0 3px}
+.m-inline.a{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd)}
+.m-inline.p{background:var(--orange-bg);color:var(--orange);border:1px solid var(--orange-bd)}
+.m-inline.n{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd)}
+
+.btn-copy{padding:6px 12px;border:1px solid rgba(255,255,255,.25);border-radius:4px;background:transparent;color:#ccc;font-size:11px;cursor:pointer;transition:all .15s}
+.btn-copy:hover{background:rgba(255,255,255,.12);color:#fff}
+
+/* ─── EMPTY STATE ─── */
+.empty-state{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:3rem 2rem;text-align:center;color:var(--muted)}
+.empty-icon{font-size:42px;margin-bottom:1rem;opacity:.5}
+.empty-state h3{font-size:15px;font-weight:600;color:var(--text);margin-bottom:.4rem}
+.empty-state p{font-size:13px;line-height:1.6;max-width:320px;margin:0 auto}
+
+@media(max-width:700px){.page{grid-template-columns:1fr}.sidebar{order:2}.content{order:1}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>ESG Learn — Espace Pédagogique</span>
+  <span><b>RNCP37158</b> · Expert en Ingénierie Patrimoniale · Année 2024–2025</span>
+</div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-mark">E</div>
+      <div class="brand-text">
+        <h1>ESG Learn</h1>
+        <p>Plateforme de correction pédagogique</p>
+      </div>
+    </div>
+    <div class="header-meta">
+      Épreuves Certifiantes<br>
+      Bloc 2 · 3 · 4
+    </div>
+  </div>
+</header>
+
+<div class="breadcrumb">
+  <div class="bc-inner">
+    <a href="#">Accueil</a><span>/</span>
+    <a href="#">Épreuves RNCP</a><span>/</span>
+    <span>Correction automatique</span>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tabs-inner">
+    <div class="tab active">📋 Correction de devoir</div>
+    <div class="tab">📚 Corrigés de référence</div>
+    <div class="tab">📊 Suivi des résultats</div>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <!-- Clé API -->
+    <div class="scard">
+      <div class="scard-head">🔑 Accès IA</div>
+      <div class="scard-body">
+        <div class="form-group">
+          <label class="form-label">Clé API Anthropic</label>
+          <div class="key-row">
+            <input type="password" id="apiKey" class="form-input" placeholder="sk-ant-api03-…" autocomplete="off">
+            <button class="toggle-btn" onclick="toggleKey()">👁</button>
+          </div>
+          <a class="key-link" href="https://console.anthropic.com/settings/keys" target="_blank">→ Obtenir une clé</a>
+          <div class="status-row"><div class="dot" id="kDot"></div><span id="kStatus">Non renseignée</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Base de référence -->
+    <div class="scard">
+      <div class="scard-head">📂 Base de corrigés RNCP</div>
+      <div class="scard-body">
+        <div class="info-chip">📖 Chargez votre fichier de corrigés officiels. L'IA corrigera selon la même méthode.</div>
+        <div class="upload-zone" id="refZone"
+             onclick="document.getElementById('refIn').click()"
+             ondragover="dg(event,'refZone')" ondragleave="dl('refZone')" ondrop="dp(event,'ref')">
+          <input type="file" id="refIn" accept=".txt,.pdf" multiple onchange="onFile(this,'ref')">
+          <div class="uz-icon">📂</div>
+          <div class="uz-label">Cliquez ou déposez</div>
+          <div class="uz-sub">TXT · PDF acceptés</div>
+        </div>
+        <div class="prog-bar" id="refProg">
+          <div class="prog-track"><div class="prog-fill" id="refFill" style="width:0%"></div></div>
+          <div class="prog-label" id="refLbl">Lecture…</div>
+        </div>
+        <div id="refChips"></div>
+        <div class="status-row" style="margin-top:8px"><div class="dot" id="rDot"></div><span id="rStatus">Aucun fichier</span></div>
+      </div>
+    </div>
+
+    <!-- Bouton corriger -->
+    <button class="btn-submit" id="btnGo" onclick="corriger()" disabled>
+      <div class="spinner" id="sp"></div>
+      <span id="btnLbl">⚡ Lancer la correction</span>
+    </button>
+
+    <!-- Légende -->
+    <div class="scard">
+      <div class="scard-head">📖 Niveaux d'évaluation</div>
+      <div class="scard-body" style="font-size:12px;line-height:1.8">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+          <span style="background:#22c55e;color:#fff;padding:1px 8px;border-radius:999px;font-size:10px;font-weight:700">ACQUIS</span>
+          <span>Raisonnement cohérent, réponses argumentées</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+          <span style="background:var(--gold);color:#fff;padding:1px 8px;border-radius:999px;font-size:10px;font-weight:700">PARTIEL</span>
+          <span>Cohérent mais incomplet ou peu argumenté</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="background:#ef4444;color:#fff;padding:1px 8px;border-radius:999px;font-size:10px;font-weight:700">NON ACQUIS</span>
+          <span>Raisonnement incohérent, justifications absentes</span>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- CONTENT -->
+  <main class="content">
+
+    <!-- Zone saisie devoir -->
+    <div class="content-card">
+      <div class="content-card-head">
+        <h2>Devoir à corriger</h2>
+        <span class="badge-edc">EDC</span>
+      </div>
+      <div class="content-card-body">
+        <textarea id="devoirTxt" class="textarea-devoir"
+          placeholder="Collez ici le texte du devoir de l'apprenant…&#10;&#10;Exemple de contenu attendu :&#10;— Analyse SWOT de l'agence avec indicateurs chiffrés&#10;— Plan d'action commercial (3 actions : objectifs, moyens, suivi)&#10;— Diagnostic patrimonial avec calculs (taux d'endettement, capacité d'épargne…)&#10;— Recommandations chiffrées et justifiées"></textarea>
+
+        <div class="or-line">ou déposez un fichier PDF / TXT</div>
+
+        <div class="upload-zone" id="dvZone"
+             onclick="document.getElementById('dvIn').click()"
+             ondragover="dg(event,'dvZone')" ondragleave="dl('dvZone')" ondrop="dp(event,'dv')">
+          <input type="file" id="dvIn" accept=".txt,.pdf" onchange="onFile(this,'dv')">
+          <div class="uz-icon">📄</div>
+          <div class="uz-label">Cliquez ou déposez le devoir</div>
+          <div class="uz-sub">PDF ou TXT — copie de l'apprenant</div>
+        </div>
+        <div class="prog-bar" id="dvProg">
+          <div class="prog-track"><div class="prog-fill" id="dvFill" style="width:0%"></div></div>
+          <div class="prog-label" id="dvLbl">Lecture…</div>
+        </div>
+        <div id="dvChips"></div>
+        <div class="errbox" id="errbox"></div>
+      </div>
+    </div>
+
+    <!-- Résultat -->
+    <div id="result-wrap">
+      <div class="result-card">
+        <div class="result-header">
+          <h2>📋 Correction — Épreuve Certifiante RNCP</h2>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="mention-badge m-def" id="mentionBadge">—</span>
+            <button class="btn-copy" onclick="copyRes()">Copier</button>
+          </div>
+        </div>
+        <div class="result-body" id="resultBody"></div>
+      </div>
+    </div>
+
+    <!-- Empty state -->
+    <div class="empty-state" id="emptyState">
+      <div class="empty-icon">📝</div>
+      <h3>Aucun devoir soumis</h3>
+      <p>Chargez la base de corrigés RNCP, collez ou uploadez le devoir de l'apprenant, puis lancez la correction.</p>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ─── PDF.js config ───────────────────────────────────────────────────────────
+if(typeof pdfjsLib!=='undefined')
+  pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+// ─── État ────────────────────────────────────────────────────────────────────
+let refFiles=[]; // [{name,size,text}]
+let dvFile=null;
+let busy=false;
+
+// ─── Clé API ─────────────────────────────────────────────────────────────────
+document.getElementById('apiKey').addEventListener('input',chkKey);
+function toggleKey(){const i=document.getElementById('apiKey');i.type=i.type==='password'?'text':'password'}
+function chkKey(){
+  const v=document.getElementById('apiKey').value.trim();
+  const dot=document.getElementById('kDot'),st=document.getElementById('kStatus'),inp=document.getElementById('apiKey');
+  if(v.startsWith('sk-ant-')&&v.length>20){dot.className='dot ok';st.textContent='Clé valide ✓';inp.classList.add('ok')}
+  else if(v.length){dot.className='dot warn';st.textContent='Format incorrect';inp.classList.remove('ok')}
+  else{dot.className='dot';st.textContent='Non renseignée';inp.classList.remove('ok')}
+  chkReady();
+}
+
+// ─── Drag & drop ─────────────────────────────────────────────────────────────
+function dg(e,id){e.preventDefault();document.getElementById(id).classList.add('over')}
+function dl(id){document.getElementById(id).classList.remove('over')}
+function dp(e,type){e.preventDefault();const id=type==='ref'?'refZone':'dvZone';document.getElementById(id).classList.remove('over');if(e.dataTransfer.files.length)handle(e.dataTransfer.files,type)}
+function onFile(inp,type){if(inp.files.length)handle(inp.files,type)}
+
+// ─── Traitement fichiers ──────────────────────────────────────────────────────
+async function handle(list,type){
+  const progId=type==='ref'?'refProg':'dvProg';
+  document.getElementById(progId).style.display='block';
+  hideErr();
+  const results=[];
+  for(let i=0;i<list.length;i++){
+    try{const t=await readF(list[i],type);results.push({name:list[i].name,size:list[i].size,text:t})}
+    catch(e){showErr('Erreur lecture "'+list[i].name+'" : '+e.message)}
+  }
+  document.getElementById(progId).style.display='none';
+  if(type==='ref'){refFiles=[...refFiles,...results];renderRef()}
+  else{dvFile=results[0]||null;renderDv()}
+  chkReady();
+}
+
+async function readF(file,type){
+  const ext=file.name.split('.').pop().toLowerCase();
+  if(ext==='pdf')return await readPDF(file,type);
+  return await new Promise((res,rej)=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.onerror=()=>rej(new Error('Impossible de lire'));r.readAsText(file,'UTF-8')});
+}
+
+async function readPDF(file,type){
+  if(typeof pdfjsLib==='undefined')throw new Error('PDF.js non disponible');
+  const fId=type==='ref'?'refFill':'dvFill',lId=type==='ref'?'refLbl':'dvLbl';
+  const buf=await file.arrayBuffer();
+  const pdf=await pdfjsLib.getDocument({data:buf}).promise;
+  let txt='';
+  for(let p=1;p<=pdf.numPages;p++){
+    const pg=await pdf.getPage(p);
+    const ct=await pg.getTextContent();
+    txt+=ct.items.map(i=>i.str).join(' ')+'\n';
+    const pct=Math.round(p/pdf.numPages*100);
+    document.getElementById(fId).style.width=pct+'%';
+    document.getElementById(lId).textContent='Lecture PDF : page '+p+'/'+pdf.numPages;
+  }
+  if(!txt.trim())throw new Error('PDF scanné détecté — utilisez un PDF avec texte sélectionnable');
+  return txt;
+}
+
+function fmtSz(b){if(b<1024)return b+' o';if(b<1048576)return(b/1024).toFixed(0)+' Ko';return(b/1048576).toFixed(1)+' Mo'}
+
+function renderRef(){
+  document.getElementById('refChips').innerHTML=refFiles.map((f,i)=>`
+    <div class="file-chip">
+      <span class="chip-name">✓ ${f.name}</span>
+      <span style="display:flex;align-items:center;gap:6px;font-size:10px;color:var(--light)">
+        ${fmtSz(f.size)}<span class="chip-del" onclick="delRef(${i})">×</span>
+      </span>
+    </div>`).join('');
+  document.getElementById('refZone').classList.toggle('loaded',refFiles.length>0);
+  const ok=refFiles.length>0;
+  document.getElementById('rDot').className='dot'+(ok?' ok':'');
+  document.getElementById('rStatus').textContent=ok?refFiles.length+' fichier(s) chargé(s) ✓':'Aucun fichier';
+}
+
+function renderDv(){
+  const c=document.getElementById('dvChips'),z=document.getElementById('dvZone');
+  if(!dvFile){c.innerHTML='';z.classList.remove('loaded');return}
+  c.innerHTML=`<div class="file-chip"><span class="chip-name">📄 ${dvFile.name}</span><span style="display:flex;align-items:center;gap:6px;font-size:10px;color:var(--light)">${fmtSz(dvFile.size)}<span class="chip-del" onclick="delDv()">×</span></span></div>`;
+  z.classList.add('loaded');
+}
+
+function delRef(i){refFiles.splice(i,1);renderRef();chkReady()}
+function delDv(){dvFile=null;renderDv();chkReady()}
+document.getElementById('devoirTxt').addEventListener('input',chkReady);
+
+function chkReady(){
+  const key=document.getElementById('apiKey').value.trim();
+  const hasDv=document.getElementById('devoirTxt').value.trim().length>30||dvFile!==null;
+  document.getElementById('btnGo').disabled=!(key.length>20&&refFiles.length>0&&hasDv)||busy;
+}
+
+// ─── CORRECTION ──────────────────────────────────────────────────────────────
+async function corriger(){
+  if(busy)return;
+  busy=true;setLoading(true);hideErr();
+
+  const key=document.getElementById('apiKey').value.trim();
+  const dv=dvFile?dvFile.text:document.getElementById('devoirTxt').value.trim();
+  const ref=refFiles.map(f=>`=== CORRIGÉ DE RÉFÉRENCE : ${f.name} ===\n${f.text}`).join('\n\n---\n\n');
+
+  // SYSTEM PROMPT — force le même process que les vrais corrigés
+  const sys=`Tu es un correcteur officiel de l'épreuve certifiante RNCP37158 — Expert en Ingénierie Patrimoniale.
+Tu as accès à la base complète des sujets et corrigés officiels de l'ESG.
+
+═══════════════════════════════════════════════════
+RÈGLES ABSOLUES DE CORRECTION
+═══════════════════════════════════════════════════
+
+1. TU DOIS SUIVRE EXACTEMENT LE MÊME PROCESSUS QUE LES CORRIGÉS DE RÉFÉRENCE :
+   - Même structure de raisonnement
+   - Mêmes types d'analyses (environnementale, segmentation, activité, encours...)
+   - Mêmes tableaux (plan d'action : Objectifs / Moyens-Ressources / Critères de suivi)
+   - Même niveau de détail dans les constats
+
+2. TU DOIS FAIRE LES CALCULS comme dans les vrais corrigés :
+   - Taux d'endettement = mensualités × 12 / revenus nets annuels × 100
+   - Capacité d'épargne = revenus nets - charges fixes - mensualités crédit - train de vie estimé
+   - Masse successorale = actif brut - passif (dettes)
+   - Droits de succession selon le barème fiscal (abattements, tranches)
+   - Écarts en points/% entre l'agence et la banque nationale
+   - Évolutions en % entre N et N-1
+   - PNB, rendements, mensualités, CRD...
+   MONTRE TOUJOURS LES FORMULES ET LE DÉTAIL DU CALCUL.
+
+3. STRUCTURE OBLIGATOIRE DE LA CORRECTION :
+
+## MENTION GLOBALE
+[ACQUIS / PARTIELLEMENT ACQUIS / NON ACQUIS + justification courte]
+
+## PARTIE 1 — [titre de la partie]
+### Analyse du travail du candidat
+[Ce qu'il a fait, comment, avec quels chiffres]
+### Éléments attendus du corrigé officiel
+[Ce que le corrigé officiel demandait, avec les calculs corrects]
+### Calculs de référence
+[Bloc avec les formules et résultats chiffrés attendus]
+### Niveau : [ACQUIS / PARTIELLEMENT ACQUIS / NON ACQUIS]
+[Justification précise]
+
+[Répéter pour chaque partie du devoir]
+
+## SYNTHÈSE — POINTS FORTS
+[Ce que le candidat a bien réussi]
+
+## SYNTHÈSE — POINTS À AMÉLIORER
+[Ce qui manque ou est insuffisant, avec les éléments attendus]
+
+## CONSEILS PÉDAGOGIQUES
+[Comment progresser concrètement pour la prochaine épreuve]
+
+═══════════════════════════════════════════════════
+BASE DE CORRIGÉS OFFICIELS (référence méthodologique) :
+═══════════════════════════════════════════════════
+${ref}`;
+
+  const usr=`Voici la copie de l'apprenant à corriger. Applique exactement la même méthode que les corrigés officiels. Fais tous les calculs nécessaires en les détaillant.
+
+COPIE DE L'APPRENANT :
+${dv}`;
+
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-opus-4-5',max_tokens:8000,system:sys,messages:[{role:'user',content:usr}]})
+    });
+    if(!resp.ok){const e=await resp.json().catch(()=>({}));throw new Error(e.error?.message||'Erreur HTTP '+resp.status)}
+    const data=await resp.json();
+    afficher(data.content.map(b=>b.text||'').join(''));
+  }catch(e){
+    let m=e.message;
+    if(m.includes('401')||m.includes('auth'))m='Clé API invalide — vérifiez sur console.anthropic.com';
+    else if(m.includes('429'))m='Limite de requêtes atteinte — attendez quelques secondes';
+    else if(m.includes('fetch')||m.includes('network')||m.includes('Failed'))m='Erreur réseau — vérifiez votre connexion';
+    showErr(m);
+  }finally{busy=false;setLoading(false)}
+}
+
+// ─── AFFICHAGE RÉSULTAT ───────────────────────────────────────────────────────
+function afficher(text){
+  document.getElementById('emptyState').style.display='none';
+  const wrap=document.getElementById('result-wrap');
+  wrap.style.display='block';
+  const badge=document.getElementById('mentionBadge');
+  const u=text.toUpperCase();
+  if(u.includes('NON ACQUIS')){badge.textContent='✗ Non acquis';badge.className='mention-badge m-non'}
+  else if(u.includes('PARTIELLEMENT ACQUIS')){badge.textContent='◑ Partiellement acquis';badge.className='mention-badge m-partiel'}
+  else if(u.includes('ACQUIS')){badge.textContent='✓ Acquis';badge.className='mention-badge m-acquis'}
+  document.getElementById('resultBody').innerHTML=renderMD(text);
+  wrap.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function renderMD(t){
+  // Escape HTML
+  t=t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  // Blocs de calcul (lignes entre ``` ou commençant par formule/calcul)
+  t=t.replace(/```(?:calcul|calc|math)?\n?([\s\S]*?)```/g,(_,c)=>`<div class="calc-block"><div class="calc-title">📐 Calcul</div>${c.replace(/\n/g,'<br>')}</div>`);
+  // Titres
+  t=t.replace(/^## (.+)$/gm,'<h2>$1</h2>');
+  t=t.replace(/^### (.+)$/gm,'<h3>$1</h3>');
+  t=t.replace(/^#### (.+)$/gm,'<h4>$1</h4>');
+  // Listes
+  t=t.replace(/^[-*•] (.+)$/gm,'<li>$1</li>');
+  t=t.replace(/(<li>[\s\S]+?<\/li>)/g,m=>'<ul>'+m+'</ul>');
+  // Gras
+  t=t.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+  // Italique
+  t=t.replace(/\*(.+?)\*/g,'<em>$1</em>');
+  // Séparateur
+  t=t.replace(/^---$/gm,'<hr>');
+  // Paragraphes
+  t=t.replace(/\n{2,}/g,'</p><p>');
+  t='<p>'+t+'</p>';
+  t=t.replace(/<p><\/p>/g,'');
+  t=t.replace(/<p>(<h[234]>)/g,'$1');
+  t=t.replace(/(<\/h[234]>)<\/p>/g,'$1');
+  t=t.replace(/<p>(<ul>)/g,'$1');
+  t=t.replace(/(<\/ul>)<\/p>/g,'$1');
+  t=t.replace(/<p>(<div class="calc-block")/g,'$1');
+  t=t.replace(/(<\/div>)<\/p>/g,'$1');
+  t=t.replace(/<p>(<hr>)<\/p>/g,'$1');
+  return t;
+}
+
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+function setLoading(on){
+  document.getElementById('sp').style.display=on?'block':'none';
+  document.getElementById('btnLbl').textContent=on?'Correction en cours…':'⚡ Lancer la correction';
+  if(!on)chkReady();else document.getElementById('btnGo').disabled=true;
+}
+function showErr(m){const b=document.getElementById('errbox');b.style.display='block';b.innerHTML='<strong>❌</strong> '+m}
+function hideErr(){document.getElementById('errbox').style.display='none'}
+function copyRes(){
+  navigator.clipboard.writeText(document.getElementById('resultBody').innerText).then(()=>{
+    const b=document.querySelector('.btn-copy');b.textContent='✓ Copié';setTimeout(()=>b.textContent='Copier',2000);
+  });
+}
+</script>
+</body>
+</html>
